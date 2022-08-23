@@ -1,0 +1,6 @@
+.checkboard {
+  display: grid;
+  width: 85vh;
+  height: 85vh;
+  grid-template-rows: repeat(8, 1fr);
+}
