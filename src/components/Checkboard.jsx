@@ -1,9 +1,10 @@
 import '../styles/Checkboard.css';
 import { Row } from './Row';
+import { useContext } from 'react';
+import { MyContext } from '../context/MyContext';
 
 const Checkboard = () => {
-  const rows = [1, 2, 3, 4, 5, 6, 7, 8];
-  rows.reverse();
+  const { rows } = useContext(MyContext);
 
   return (
     <div className="checkboard">
