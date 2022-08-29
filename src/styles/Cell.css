@@ -8,6 +8,10 @@
   justify-content: center;
 }
 
+.cell span {
+  font-size: 11px;
+}
+
 .row:nth-child(odd) .cell:nth-child(odd) {
   background: #ddd;
   color: #333;

@@ -1,10 +1,12 @@
 import '../styles/Circle.css';
 
-const Circle = ({ column, row }) => {
-  return (
-    <div id={'circle' + column + row} className="circle red">
-    </div>
-  );
+const Circle = ({ color }) => {
+  if (color === 'red') {
+    return <div className='circle red'></div>
+  }
+  if (color === 'black') {
+    return <div className='circle'></div>
+  }
 };
 
 export { Circle };

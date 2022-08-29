@@ -1,18 +1,19 @@
-import { useState, useEffect } from 'react';
 import { Circle } from './Circle';
 import '../styles/Piece.css';
 
-const Piece = ({ thisPiece, color }) => {
-  switch (thisPiece) {
-    case 'empty':
+const Piece = ({ piece, color }) => {
+  switch (piece) {
+    case '':
       return;
     case 'circle':
-      return <Circle></Circle>;
+      return <Circle color="black"></Circle>;
+    case 'red-circle':
+      return <Circle color="red"></Circle>;
     default:
       return (
-        <>
-          {thisPiece} <br /> {color}
-        </>
+        <div className='piece'>
+          {color} <br /> {piece}
+        </div>
       );
   }
 };

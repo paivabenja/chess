@@ -1,4 +1,4 @@
-import { Cell, CellContextProvider } from './Cell';
+import { Cell } from './Cell';
 import { useContext } from 'react';
 import { MyContext } from '../context/MyContext';
 import '../styles/Row.css';
@@ -9,11 +9,7 @@ const Row = ({ row, rowClass }) => {
   return (
     <div className={rowClass}>
       {columns.map((column, i) => {
-        return (
-          <CellContextProvider key={i}>
-            <Cell row={row} column={column}></Cell>
-          </CellContextProvider>
-        );
+        return <Cell key={i} row={row} column={column}></Cell>;
       })}
     </div>
   );

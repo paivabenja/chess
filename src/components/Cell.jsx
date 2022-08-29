@@ -1,45 +1,101 @@
-import { useContext, createContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '../styles/Cell.css';
 import { Piece } from './Piece';
 
-const CellContext = createContext();
-
 const Cell = ({ row, column }) => {
-  const { piece, setPiece, pieceColor, setPieceColor } =
-    useContext(CellContext);
+  const [pieceColor, setPieceColor] = useState('');
+  const [piece, setPiece] = useState('');
+  const [isSelected, setIsSelected] = useState(false);
 
   const handleClick = () => {
-    setPiece('queen');
-    setPieceColor('black');
+    if (!isSelected && piece === '') {
+      setIsSelected(true)
+    } else if (!isSelected && piece !== '') {
+      setPiece('');
+    }
   };
 
+  //re order checkboard
   useEffect(() => {
-    console.log('effect activated');
+    switch (row) {
+      case 1:
+        setPieceColor('white');
+        switch (column) {
+          case 'A':
+            setPiece('tower');
+            break;
+          case 'B':
+            setPiece('knight');
+            break;
+          case 'C':
+            setPiece('bishop');
+            break;
+          case 'D':
+            setPiece('queen');
+            break;
+          case 'E':
+            setPiece('king');
+            break;
+          case 'F':
+            setPiece('bishop');
+            break;
+          case 'G':
+            setPiece('knight');
+            break;
+          case 'H':
+            setPiece('tower');
+            break;
+        }
+        break;
+      case 2:
+        setPieceColor('white');
+        setPiece('pawn');
+        break;
+      case 7:
+        setPieceColor('black');
+        setPiece('pawn');
+        break;
+      case 8:
+        setPieceColor('black');
+        switch (column) {
+          case 'A':
+            setPiece('tower');
+            break;
+          case 'B':
+            setPiece('knight');
+            break;
+          case 'C':
+            setPiece('bishop');
+            break;
+          case 'D':
+            setPiece('queen');
+            break;
+          case 'E':
+            setPiece('king');
+            break;
+          case 'F':
+            setPiece('bishop');
+            break;
+          case 'G':
+            setPiece('knight');
+            break;
+          case 'H':
+            setPiece('tower');
+            break;
+        }
+        break;
+    }
   }, []);
 
   return (
     <div className="cell" id={'cell' + column + row} onClick={handleClick}>
       <span>{column + row}</span>
       <Piece
-        thisPiece={piece}
+        piece={piece}
         color={pieceColor}
-        position={row + column}
       ></Piece>
     </div>
   );
 };
 
-const CellContextProvider = ({ children }) => {
-  const [pieceColor, setPieceColor] = useState('white');
-  const [piece, setPiece] = useState('empty');
-
-  return (
-    <CellContext.Provider
-      value={{ pieceColor, setPieceColor, setPiece, piece }}
-    >
-      {children}
-    </CellContext.Provider>
-  );
-};
-
-export { Cell, CellContextProvider };
+export { Cell };
