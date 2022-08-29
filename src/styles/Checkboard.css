@@ -3,5 +3,8 @@
   width: 85vh;
   height: 85vh;
   grid-template-rows: repeat(8, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   border: solid 2px black;
+  background-color: rgb(125, 125, 125, 1);
 }
+

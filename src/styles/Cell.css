@@ -12,22 +12,49 @@
   font-size: 11px;
 }
 
-.row:nth-child(odd) .cell:nth-child(odd) {
-  background: #ddd;
+/*.unselected .even:nth-child(odd) {*/
+  /*background: rgba(255, 255, 255, 1);*/
+  /*color: #333;*/
+/*}*/
+
+/*.unselected .even:nth-child(even) {*/
+  /*background: rgba(50, 50, 50, 1);*/
+  /*color: #ddd;*/
+/*}*/
+
+/*.selected .even:nth-child(odd) {*/
+  /*background: rgba(255, 255, 255, 0.7);*/
+  /*color: #444;*/
+/*}*/
+
+/*.selected .even:nth-child(even) {*/
+  /*background: rgba(50, 50, 50, 0.7);*/
+  /*color: #ccc;*/
+/*}*/
+
+/*.odd .unselected:nth-child(odd) {*/
+  /*background: rgba(255, 255, 255, 0.7);*/
+  /*color: #333;*/
+/*}*/
+
+/*.odd .unselected:nth-child(even) {*/
+  /*background: rgba(50, 50, 50, 1);*/
+  /*color: #ddd;*/
+/*}*/
+
+/*.odd .selected:nth-child(odd) {*/
+  /*background: rgba(255, 255, 255, 0.7);*/
+  /*color: #444;*/
+/*}*/
+
+/*.odd .selected:nth-child(even) {*/
+  /*background: rgba(50, 50, 50, 0.7);*/
+  /*color: #ccc;*/
+/*}*/
+
+
+
+.even.selected{
+  background: rgba(255, 255, 255, 1);
   color: #333;
-}
-
-.row:nth-child(odd) .cell:nth-child(even) {
-  background: #333;
-  color: #ddd;
-}
-
-.row:nth-child(even) .cell:nth-child(even) {
-  background: #ddd;
-  color: #333;
-}
-
-.row:nth-child(even) .cell:nth-child(odd) {
-  background: #333;
-  color: #ddd;
 }
