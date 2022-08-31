@@ -6,9 +6,21 @@ import { Cell } from './Cell';
 const Checkboard = () => {
   const { rows, columns, cleanSelection } = useContext(MyContext);
 
-  const handleSelection = () => {
-    console.log('activated');
-    cleanSelection();
+  const handleSelection = (selectionSetter, selectionGetter, row, column) => {
+    //cleanSelection();
+    rows.map((arrayRow) => {
+      columns.map((arrayColumn) => {
+        if (row == arrayRow && column == arrayColumn) {
+
+          console.log('yessir');
+          selectionSetter(true);
+          return;
+        } else if (row != arrayRow || column != arrayColumn) {
+          selectionSetter(false);
+
+        }
+      });
+    });
   };
 
   return (

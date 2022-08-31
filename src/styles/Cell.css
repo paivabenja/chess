@@ -12,49 +12,42 @@
   font-size: 11px;
 }
 
-/*.unselected .even:nth-child(odd) {*/
-  /*background: rgba(255, 255, 255, 1);*/
-  /*color: #333;*/
-/*}*/
-
-/*.unselected .even:nth-child(even) {*/
-  /*background: rgba(50, 50, 50, 1);*/
-  /*color: #ddd;*/
-/*}*/
-
-/*.selected .even:nth-child(odd) {*/
-  /*background: rgba(255, 255, 255, 0.7);*/
-  /*color: #444;*/
-/*}*/
-
-/*.selected .even:nth-child(even) {*/
-  /*background: rgba(50, 50, 50, 0.7);*/
-  /*color: #ccc;*/
-/*}*/
-
-/*.odd .unselected:nth-child(odd) {*/
-  /*background: rgba(255, 255, 255, 0.7);*/
-  /*color: #333;*/
-/*}*/
-
-/*.odd .unselected:nth-child(even) {*/
-  /*background: rgba(50, 50, 50, 1);*/
-  /*color: #ddd;*/
-/*}*/
-
-/*.odd .selected:nth-child(odd) {*/
-  /*background: rgba(255, 255, 255, 0.7);*/
-  /*color: #444;*/
-/*}*/
-
-/*.odd .selected:nth-child(even) {*/
-  /*background: rgba(50, 50, 50, 0.7);*/
-  /*color: #ccc;*/
-/*}*/
-
-
-
-.even.selected{
+.unselected.even:nth-child(odd) {
   background: rgba(255, 255, 255, 1);
-  color: #333;
+  color: rgba(50, 50, 50, 1);
+}
+
+.unselected.even:nth-child(even) {
+  background: rgba(50, 50, 50, 1);
+  color: rgba(255, 255, 255, 1);
+}
+
+.selected.even:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.5);
+  color: rgba(50, 50, 50, 1);
+}
+
+.selected.even:nth-child(even) {
+  background: rgba(50, 50, 50, 0.5);
+  color: rgba(255, 255, 255, 1);
+}
+
+.unselected.odd:nth-child(even) {
+  background: rgba(255, 255, 255, 1);
+  color: rgba(50, 50, 50, 1);
+}
+
+.unselected.odd:nth-child(odd) {
+  background: rgba(50, 50, 50, 1);
+  color: rgba(255, 255, 255, 1);
+}
+
+.selected.odd:nth-child(even) {
+  background: rgba(255, 255, 255, 0.5);
+  color: rgba(50, 50, 50, 1);
+}
+
+.selected.odd:nth-child(odd) {
+  background: rgba(50, 50, 50, 0.5);
+  color: rgba(255, 255, 255, 1);
 }

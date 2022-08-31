@@ -26,7 +26,7 @@ export const MyContextProvider = ({ children }) => {
   const rows = [8, 7, 6, 5, 4, 3, 2, 1];
 
   const cleanSelection = () => {
-    console.log('next player: ', nextPlayer);
+    console.log('cleanSelection');
   };
 
   return (

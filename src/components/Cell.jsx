@@ -79,13 +79,20 @@ const Cell = ({ row, column, handleSelection }) => {
   const [piece, setPiece] = useState('');
   const [isSelected, setIsSelected] = useState(false);
 
+  const selectionSetter = (arg) => {
+    setIsSelected(arg);
+    if (arg === true) {
+      setIsSelected(arg);
+      console.log(isSelected);
+    }
+  };
   const handleClick = () => {
     if (!isSelected) {
       setIsSelected(true);
     } else if (isSelected) {
       setIsSelected(false);
     }
-    handleSelection();
+    handleSelection(selectionSetter, isSelected, row, column);
   };
 
   const handleClassName = (classname = '') => {
@@ -94,10 +101,11 @@ const Cell = ({ row, column, handleSelection }) => {
     } else if (!isSelected) {
       classname = 'cell unselected';
     }
+
     if (row % 2 == 1) {
       classname = classname.concat(' odd');
-    } else if (row % 2 == 0){
-      classname = classname.concat(' even')
+    } else if (row % 2 == 0) {
+      classname = classname.concat(' even');
     }
     return classname;
   };
