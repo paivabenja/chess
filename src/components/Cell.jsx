@@ -1,98 +1,36 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { MyContext } from '../context/MyContext';
 import '../styles/Cell.css';
 import { Piece } from './Piece';
 
-const Cell = ({ row, column, handleSelection }) => {
+const Cell = ({ row, column }) => {
+  const { cleanSelection, orderCheckboard } = useContext(MyContext);
+
   //useEffect
   useEffect(() => {
-    switch (row) {
-      case 1:
-        setPieceColor('white');
-        switch (column) {
-          case 'A':
-            setPiece('tower');
-            break;
-          case 'B':
-            setPiece('knight');
-            break;
-          case 'C':
-            setPiece('bishop');
-            break;
-          case 'D':
-            setPiece('queen');
-            break;
-          case 'E':
-            setPiece('king');
-            break;
-          case 'F':
-            setPiece('bishop');
-            break;
-          case 'G':
-            setPiece('knight');
-            break;
-          case 'H':
-            setPiece('tower');
-            break;
-        }
-        break;
-      case 2:
-        setPieceColor('white');
-        setPiece('pawn');
-        break;
-      case 7:
-        setPieceColor('black');
-        setPiece('pawn');
-        break;
-      case 8:
-        setPieceColor('black');
-        switch (column) {
-          case 'A':
-            setPiece('tower');
-            break;
-          case 'B':
-            setPiece('knight');
-            break;
-          case 'C':
-            setPiece('bishop');
-            break;
-          case 'D':
-            setPiece('queen');
-            break;
-          case 'E':
-            setPiece('king');
-            break;
-          case 'F':
-            setPiece('bishop');
-            break;
-          case 'G':
-            setPiece('knight');
-            break;
-          case 'H':
-            setPiece('tower');
-            break;
-        }
-        break;
-    }
+    orderCheckboard(row, column, setPiece, setPieceColor);
   }, []);
 
   const [pieceColor, setPieceColor] = useState('');
   const [piece, setPiece] = useState('');
   const [isSelected, setIsSelected] = useState(false);
 
-  const selectionSetter = (arg) => {
-    setIsSelected(arg);
-    if (arg === true) {
-      setIsSelected(arg);
-      console.log(isSelected);
-    }
-  };
   const handleClick = () => {
     if (!isSelected) {
-      setIsSelected(true);
+      console.log('not selected');
+      let clean = cleanSelection(row, column);
+      if (clean) {
+        console.log('cleanSelection true: ');
+        setIsSelected(true);
+      } else {
+        console.log('cleanSelection false: ', clean);
+        setIsSelected(false);
+      }
+      console.log('clean: ', clean);
     } else if (isSelected) {
       setIsSelected(false);
+      console.log('selected');
     }
-    handleSelection(selectionSetter, isSelected, row, column);
   };
 
   const handleClassName = (classname = '') => {
