@@ -3,43 +3,49 @@ import { MyContext } from '../context/MyContext';
 import '../styles/Cell.css';
 import { Piece } from './Piece';
 
-const Cell = ({ row, column }) => {
-  const { cleanSelection, orderCheckboard } = useContext(MyContext);
+const Cell = ({ row, column, boardUpdater, setBoardUpdater }) => {
+  const [pieceColor, setPieceColor] = useState('');
+  const [piece, setPiece] = useState('');
+  const [isSelected, setIsSelected] = useState(false);
+  const [isCurrentCell, setIsCurrentCell] = useState(false);
 
-  //useEffect
+  const { orderCheckboard } = useContext(MyContext);
+
+  //Pieces starting position
   useEffect(() => {
     orderCheckboard(row, column, setPiece, setPieceColor);
   }, []);
 
-  const [pieceColor, setPieceColor] = useState('');
-  const [piece, setPiece] = useState('');
-  const [isSelected, setIsSelected] = useState(false);
+  //Clean board when selected other piece
+  const updateBoard = () => {
+    setBoardUpdater(!boardUpdater);
+  };
+  useEffect(() => {
+    console.log('effect');
+    if (!isCurrentCell) {
+      setIsSelected(false)
+    } else {
+      setIsSelected(true)
+      setIsCurrentCell(false)
+    }
+  }, [boardUpdater]);
 
   const handleClick = () => {
     if (!isSelected) {
-      console.log('not selected');
-      let clean = cleanSelection(row, column);
-      if (clean) {
-        console.log('cleanSelection true: ');
-        setIsSelected(true);
-      } else {
-        console.log('cleanSelection false: ', clean);
-        setIsSelected(false);
-      }
-      console.log('clean: ', clean);
-    } else if (isSelected) {
+      setIsCurrentCell(true);
+      updateBoard();
+    } else {
+      setIsCurrentCell(false);
       setIsSelected(false);
-      console.log('selected');
     }
   };
 
-  const handleClassName = (classname = '') => {
+  const handleClassName = (classname) => {
     if (isSelected) {
       classname = 'cell selected';
     } else if (!isSelected) {
       classname = 'cell unselected';
     }
-
     if (row % 2 == 1) {
       classname = classname.concat(' odd');
     } else if (row % 2 == 0) {
