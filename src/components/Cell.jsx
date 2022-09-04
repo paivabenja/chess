@@ -2,9 +2,10 @@ import { useState, useEffect, useContext } from 'react';
 import { MyContext } from '../context/MyContext';
 import '../styles/Cell.css';
 import { Piece } from './Piece';
+import { selectCell } from './cell.js';
 
-const Cell = ({ row, column, boardUpdater, setBoardUpdater }) => {
-  const [pieceColor, setPieceColor] = useState('');
+const Cell = ({ row, column, boardUpdater, setBoardUpdater, turn }) => {
+  const [pieceColor, setPieceColor] = useState();
   const [piece, setPiece] = useState('');
   const [isSelected, setIsSelected] = useState(false);
   const [isCurrentCell, setIsCurrentCell] = useState(false);
@@ -23,21 +24,24 @@ const Cell = ({ row, column, boardUpdater, setBoardUpdater }) => {
   useEffect(() => {
     console.log('effect');
     if (!isCurrentCell) {
-      setIsSelected(false)
+      setIsSelected(false);
     } else {
-      setIsSelected(true)
-      setIsCurrentCell(false)
+      setIsSelected(true);
+      setIsCurrentCell(false);
     }
   }, [boardUpdater]);
 
   const handleClick = () => {
-    if (!isSelected) {
-      setIsCurrentCell(true);
-      updateBoard();
-    } else {
-      setIsCurrentCell(false);
-      setIsSelected(false);
-    }
+    selectCell(
+      isSelected,
+      piece,
+      pieceColor,
+      turn,
+      setIsCurrentCell,
+      updateBoard,
+      setIsSelected,
+    );
+     
   };
 
   const handleClassName = (classname) => {

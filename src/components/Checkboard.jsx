@@ -4,7 +4,9 @@ import { MyContext } from '../context/MyContext';
 import { Cell } from './Cell';
 
 const Checkboard = () => {
-  const [boardUpdater, setBoardUpdater] = useState(true)
+  const [boardUpdater, setBoardUpdater] = useState(true);
+  const [turn, setTurn] = useState('white');
+  const [currentCell, setCurrentCell] = useState('');
   const { rows, columns } = useContext(MyContext);
 
   return (
@@ -13,6 +15,8 @@ const Checkboard = () => {
         columns.map((column, j) => {
           return (
             <Cell
+              setTurn={setTurn}
+              turn={turn}
               boardUpdater={boardUpdater}
               setBoardUpdater={setBoardUpdater}
               key={(i, j)}
