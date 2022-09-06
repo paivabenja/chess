@@ -1,71 +1,86 @@
 import { useState, useEffect, useContext } from 'react';
-import { MyContext } from '../context/MyContext';
 import '../styles/Cell.css';
 import { Piece } from './Piece';
-import { selectCell } from './cell.js';
+import { boardContext } from './Checkboard';
+import { orderCheckboard, handleClassName } from './cellFunctions';
 
-const Cell = ({ row, column, boardUpdater, setBoardUpdater, turn }) => {
-  const [pieceColor, setPieceColor] = useState();
-  const [piece, setPiece] = useState('');
+const Cell = ({ row, column }) => {
+  const [pieceColor, setPieceColor] = useState('');
+  const [pieceKind, setPieceKind] = useState('');
   const [isSelected, setIsSelected] = useState(false);
   const [isCurrentCell, setIsCurrentCell] = useState(false);
 
-  const { orderCheckboard } = useContext(MyContext);
+  const {
+    setCurrentPiece,
+    currentPiece,
+    setCurrentPieceColor,
+    currentPieceColor,
+    setCurrentCell,
+    currentCell,
+    boardUpdater,
+    setBoardUpdater,
+    turn,
+  } = useContext(boardContext);
 
   //Pieces starting position
   useEffect(() => {
-    orderCheckboard(row, column, setPiece, setPieceColor);
+    orderCheckboard(row, column, setPieceKind, setPieceColor);
   }, []);
 
   //Clean board when selected other piece
   const updateBoard = () => {
     setBoardUpdater(!boardUpdater);
   };
+
   useEffect(() => {
-    console.log('effect');
-    if (!isCurrentCell) {
-      setIsSelected(false);
-    } else {
-      setIsSelected(true);
-      setIsCurrentCell(false);
-    }
+    cellSelector();
   }, [boardUpdater]);
 
-  const handleClick = () => {
-    selectCell(
-      isSelected,
-      piece,
-      pieceColor,
-      turn,
-      setIsCurrentCell,
-      updateBoard,
-      setIsSelected,
-    );
-     
+  const cellSelector = () => {
+    if (!isCurrentCell) {
+      setIsSelected(false);
+    }
+    if (isCurrentCell) {
+      setIsSelected(true);
+      setCurrentCell(''.concat(row, column));
+      setCurrentPiece(pieceKind);
+      setCurrentPieceColor(pieceColor);
+      setIsCurrentCell(false);
+    }
   };
 
-  const handleClassName = (classname) => {
-    if (isSelected) {
-      classname = 'cell selected';
-    } else if (!isSelected) {
-      classname = 'cell unselected';
+  const spawnPiece = () => {
+    setPieceKind(currentPiece);
+    setPieceColor(currentPieceColor);
+    setCurrentPiece('');
+    setCurrentCell('');
+    setCurrentPieceColor('');
+  };
+
+  const handleClick = () => {
+    if (!isSelected) {
+      if (pieceKind != '' && pieceColor === turn) {
+        setIsCurrentCell(true);
+      } else if (pieceKind == '') {
+        if (currentCell != '' && currentPiece != '') {
+          spawnPiece();
+        }
+      }
+      updateBoard();
+    } else {
+      setIsCurrentCell(false);
+      setIsSelected(false);
     }
-    if (row % 2 == 1) {
-      classname = classname.concat(' odd');
-    } else if (row % 2 == 0) {
-      classname = classname.concat(' even');
-    }
-    return classname;
   };
 
   return (
     <div
-      className={handleClassName() + ' r' + row + ' c' + column}
+      className={handleClassName(isSelected, row) + ' r' + row + ' c' + column}
       id={'cell' + column + row}
       onClick={handleClick}
     >
       <span>{column + row}</span>
-      <Piece piece={piece} color={pieceColor}></Piece>
+      <Piece piece={pieceKind} color={pieceColor}></Piece>
     </div>
   );
 };

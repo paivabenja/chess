@@ -1,33 +1,50 @@
 import '../styles/Checkboard.css';
-import { useContext, React, useState } from 'react';
-import { MyContext } from '../context/MyContext';
+import { createContext, React, useState } from 'react';
 import { Cell } from './Cell';
 
+const boardContext = createContext();
+
 const Checkboard = () => {
-  const [boardUpdater, setBoardUpdater] = useState(true);
-  const [turn, setTurn] = useState('white');
-  const [currentCell, setCurrentCell] = useState('');
-  const { rows, columns } = useContext(MyContext);
+  const columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  const rows = [8, 7, 6, 5, 4, 3, 2, 1];
 
   return (
-    <div className="checkboard">
-      {rows.map((row, i) =>
-        columns.map((column, j) => {
-          return (
-            <Cell
-              setTurn={setTurn}
-              turn={turn}
-              boardUpdater={boardUpdater}
-              setBoardUpdater={setBoardUpdater}
-              key={(i, j)}
-              row={row}
-              column={column}
-            ></Cell>
-          );
-        }),
-      )}
-    </div>
+    <BoardContextProvider>
+      <div className="checkboard">
+        {rows.map((row, i) =>
+          columns.map((column, j) => {
+            return <Cell key={(i, j)} row={row} column={column}></Cell>;
+          }),
+        )}
+      </div>
+    </BoardContextProvider>
   );
 };
 
-export { Checkboard };
+const BoardContextProvider = ({ children }) => {
+  const [boardUpdater, setBoardUpdater] = useState(true);
+  const [turn, setTurn] = useState('white');
+  const [nextPlayer, setNextPlayer] = useState('white');
+  const [currentCell, setCurrentCell] = useState('');
+  const [currentPiece, setCurrentPiece] = useState('');
+  const [currentPieceColor, setCurrentPieceColor] = useState('');
+
+  return (
+    <boardContext.Provider
+      value={{
+        setCurrentPiece,
+        currentPiece,
+        setCurrentPieceColor,
+        currentPieceColor,
+        setCurrentCell,
+        currentCell,
+        boardUpdater,
+        setBoardUpdater,
+        turn,
+      }}
+    >
+      {children}
+    </boardContext.Provider>
+  );
+};
+export { Checkboard, boardContext };
