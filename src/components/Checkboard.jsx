@@ -22,12 +22,13 @@ const Checkboard = () => {
 };
 
 const BoardContextProvider = ({ children }) => {
-  const [boardUpdater, setBoardUpdater] = useState(true);
+  const [update, updater] = useState(true);
   const [turn, setTurn] = useState('white');
-  const [nextPlayer, setNextPlayer] = useState('white');
+  //const [nextPlayer, setNextPlayer] = useState('white');
   const [currentCell, setCurrentCell] = useState('');
   const [currentPiece, setCurrentPiece] = useState('');
   const [currentPieceColor, setCurrentPieceColor] = useState('');
+  const [cellToDelete, setCellToDelete] = useState('');
 
   return (
     <boardContext.Provider
@@ -38,8 +39,10 @@ const BoardContextProvider = ({ children }) => {
         currentPieceColor,
         setCurrentCell,
         currentCell,
-        boardUpdater,
-        setBoardUpdater,
+        updater,
+        update,
+        cellToDelete,
+        setCellToDelete,
         turn,
       }}
     >

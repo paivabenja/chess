@@ -2,4 +2,11 @@
   position: absolute;
   align-self: center;
   justify-self: center;
+  height: 8.5vh;
+  width: 8.5vh;
+}
+
+.piece img {
+  size: contain;
+  height: 100%;
 }

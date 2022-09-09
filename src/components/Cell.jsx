@@ -2,85 +2,89 @@ import { useState, useEffect, useContext } from 'react';
 import '../styles/Cell.css';
 import { Piece } from './Piece';
 import { boardContext } from './Checkboard';
-import { orderCheckboard, handleClassName } from './cellFunctions';
+import { cell as functions } from './cellFunctions';
+const cell = new functions();
 
 const Cell = ({ row, column }) => {
   const [pieceColor, setPieceColor] = useState('');
   const [pieceKind, setPieceKind] = useState('');
   const [isSelected, setIsSelected] = useState(false);
   const [isCurrentCell, setIsCurrentCell] = useState(false);
+  //
+  // the states object is made to maintein some code order
+  // when passing arguments to the cellFunctions.js functions
+  //
+  const states = {
+    pieceColor,
+    setPieceColor,
+    setPieceKind,
+    pieceKind,
+    setPieceKind,
+    isSelected,
+    setIsSelected,
+    isCurrentCell,
+    setIsCurrentCell,
+  };
 
-  const {
-    setCurrentPiece,
-    currentPiece,
-    setCurrentPieceColor,
-    currentPieceColor,
-    setCurrentCell,
-    currentCell,
-    boardUpdater,
-    setBoardUpdater,
-    turn,
-  } = useContext(boardContext);
+  const board = useContext(boardContext);
 
-  //Pieces starting position
+  //Effect used to order all pieces at the beggining of the match
   useEffect(() => {
-    orderCheckboard(row, column, setPieceKind, setPieceColor);
+    cell.orderCheckboard(row, column, states);
   }, []);
 
-  //Clean board when selected other piece
+  //  Made this to toggle al cells from one cell
   const updateBoard = () => {
-    setBoardUpdater(!boardUpdater);
+    board.updater(!board.update);
   };
 
+  //updateBoard
   useEffect(() => {
-    cellSelector();
-  }, [boardUpdater]);
-
-  const cellSelector = () => {
-    if (!isCurrentCell) {
-      setIsSelected(false);
+    cell.cellSelector(states, board, row, column);
+    if (row + column == board.cellToDelete) {
+      console.log('clean: ', board.cellToDelete);
+      states.setPieceKind('')
+      board.setCellToDelete('')
     }
-    if (isCurrentCell) {
-      setIsSelected(true);
-      setCurrentCell(''.concat(row, column));
-      setCurrentPiece(pieceKind);
-      setCurrentPieceColor(pieceColor);
-      setIsCurrentCell(false);
-    }
-  };
+  }, [board.update]);
 
-  const spawnPiece = () => {
-    setPieceKind(currentPiece);
-    setPieceColor(currentPieceColor);
-    setCurrentPiece('');
-    setCurrentCell('');
-    setCurrentPieceColor('');
+  const delPiece = () => {
+    board.setCellToDelete(board.currentCell);
+    updateBoard();
   };
 
   const handleClick = () => {
-    if (!isSelected) {
-      if (pieceKind != '' && pieceColor === turn) {
-        setIsCurrentCell(true);
-      } else if (pieceKind == '') {
-        if (currentCell != '' && currentPiece != '') {
-          spawnPiece();
+    if (board.currentCell != row + column) {
+      delPiece();
+    }
+    if (!states.isSelected) {
+      if (states.pieceKind != '' && states.pieceColor == board.turn) {
+        states.setIsCurrentCell(true);
+      } else if (states.pieceKind == '') {
+        if (board.currentCell != '' && board.currentPiece != '') {
+          cell.spawnPiece(states, board);
         }
       }
       updateBoard();
     } else {
-      setIsCurrentCell(false);
-      setIsSelected(false);
+      cell.deselectCell(states.setIsCurrentCell, states.setIsSelected, board);
     }
   };
 
   return (
     <div
-      className={handleClassName(isSelected, row) + ' r' + row + ' c' + column}
+      className={
+        cell.handleClassName(states.isSelected, row) +
+        ' r' +
+        row +
+        ' c' +
+        column
+      }
       id={'cell' + column + row}
       onClick={handleClick}
     >
       <span>{column + row}</span>
-      <Piece piece={pieceKind} color={pieceColor}></Piece>
+      <Piece piece={states.pieceKind} color={states.pieceColor}></Piece>
     </div>
   );
 };
