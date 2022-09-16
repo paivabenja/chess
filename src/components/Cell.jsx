@@ -10,10 +10,10 @@ const Cell = ({ row, column }) => {
   const [pieceKind, setPieceKind] = useState('');
   const [isSelected, setIsSelected] = useState(false);
   const [isCurrentCell, setIsCurrentCell] = useState(false);
-  //
+
   // the states object is made to maintein some code order
   // when passing arguments to the cellFunctions.js functions
-  //
+
   const states = {
     pieceColor,
     setPieceColor,
@@ -28,48 +28,44 @@ const Cell = ({ row, column }) => {
 
   const board = useContext(boardContext);
 
-  //Effect used to order all pieces at the beggining of the match
-  useEffect(() => {
-    cell.orderCheckboard(row, column, states);
-  }, []);
+  const handleClick = () => {
+    if (board.currentCell != row + column) {
+      cell.deletePiece(board, cell);
+    }
 
-  //  Made this to toggle al cells from one cell
-  const updateBoard = () => {
-    board.updater(!board.update);
+    if (states.isSelected) {
+      cell.deselectCell(states, board);
+      return;
+    }
+
+    if (states.pieceKind != '') {
+      if (board.currentPiece != states.pieceKind && board.currentPiece != '') {
+        states.setPieceKind(board.currentPiece);
+      }
+      states.setIsCurrentCell(true);
+      cell.updateBoard(board);
+      return;
+    }
+
+    if (states.pieceKind == '' && board.currentPiece != '') {
+      cell.spawnPiece(states, board);
+      cell.updateBoard(board);
+    }
   };
 
   //updateBoard
   useEffect(() => {
     cell.cellSelector(states, board, row, column);
     if (row + column == board.cellToDelete) {
-      console.log('clean: ', board.cellToDelete);
-      states.setPieceKind('')
-      board.setCellToDelete('')
+      states.setPieceKind('');
+      board.setCellToDelete('');
     }
   }, [board.update]);
 
-  const delPiece = () => {
-    board.setCellToDelete(board.currentCell);
-    updateBoard();
-  };
-
-  const handleClick = () => {
-    if (board.currentCell != row + column) {
-      delPiece();
-    }
-    if (!states.isSelected) {
-      if (states.pieceKind != '' && states.pieceColor == board.turn) {
-        states.setIsCurrentCell(true);
-      } else if (states.pieceKind == '') {
-        if (board.currentCell != '' && board.currentPiece != '') {
-          cell.spawnPiece(states, board);
-        }
-      }
-      updateBoard();
-    } else {
-      cell.deselectCell(states.setIsCurrentCell, states.setIsSelected, board);
-    }
-  };
+  //Effect used to order all pieces at the beggining of the match
+  useEffect(() => {
+    cell.orderCheckboard(row, column, states);
+  }, []);
 
   return (
     <div

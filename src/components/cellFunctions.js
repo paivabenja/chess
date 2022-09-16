@@ -7,11 +7,29 @@ class cell {
     board.setCurrentPieceColor('');
   };
 
+  //  Made this to toggle al cells from one cell
+  updateBoard = (board) => {
+    board.updater(!board.update);
+  };
+
+  deletePiece = (board, cell) => {
+    board.setCellToDelete(board.currentCell);
+    cell.updateBoard(board);
+  };
+
   cellSelector = (states, board, row, column) => {
     if (!states.isCurrentCell) {
       states.setIsSelected(false);
     }
     if (states.isCurrentCell) {
+      if (states.pieceKind == board.currentPiece) {
+        states.setIsSelected(false);
+        board.setCurrentCell(row + column);
+        board.setCurrentPiece(states.pieceKind);
+        board.setCurrentPieceColor(states.pieceColor);
+        states.setIsCurrentCell(false);
+        return;
+      }
       states.setIsSelected(true);
       board.setCurrentCell(row + column);
       board.setCurrentPiece(states.pieceKind);
@@ -114,15 +132,13 @@ class cell {
     return classname;
   };
 
-  deselectCell = (setIsCurrentCell, setIsSelected, board) => {
-    setIsCurrentCell(false);
-    setIsSelected(false);
+  deselectCell = (states, board) => {
+    states.setIsCurrentCell(false);
+    states.setIsSelected(false);
     board.setCurrentCell('');
     board.setCurrentPiece('');
     board.setCurrentPieceColor('');
   };
-
-  clean = () => {};
 }
 
 export { cell };
