@@ -40,7 +40,8 @@ const Cell = ({ row, column }) => {
 
     if (states.pieceKind != '') {
       if (board.currentPiece != states.pieceKind && board.currentPiece != '') {
-        states.setPieceKind(board.currentPiece);
+        cell.spawnPiece(states, board);
+        states.setIsSelected(false);
       }
       states.setIsCurrentCell(true);
       cell.updateBoard(board);
