@@ -1,18 +1,19 @@
-import { useState, useEffect, useContext } from 'react';
-import '../styles/Cell.css';
-import { Piece } from './Piece';
-import { boardContext } from './Checkboard';
-import { cell as functions } from './cellFunctions';
+import { useState, useEffect, useContext } from "react";
+import "../styles/Cell.css";
+import { Piece } from "./Piece";
+import { boardContext } from "./Checkboard";
+import { cell as functions } from "./cellFunctions";
 const cell = new functions();
 
 const Cell = ({ row, column }) => {
-  const [pieceColor, setPieceColor] = useState('');
-  const [pieceKind, setPieceKind] = useState('');
+  const [pieceColor, setPieceColor] = useState("");
+  const [pieceKind, setPieceKind] = useState("");
   const [isSelected, setIsSelected] = useState(false);
   const [isCurrentCell, setIsCurrentCell] = useState(false);
 
-  // the states object is made to maintein some code order
-  // when passing arguments to the cellFunctions.js functions
+  // All states and most of the functions are managed by a
+  // container object (states, cell, board), this is so i
+  // can remember where do those states come from
 
   const states = {
     pieceColor,
@@ -38,19 +39,20 @@ const Cell = ({ row, column }) => {
       return;
     }
 
-    if (states.pieceKind != '') {
-      if (board.currentPiece != states.pieceKind && board.currentPiece != '') {
-        cell.spawnPiece(states, board);
+    if (states.pieceKind != "") {
+      if (board.currentPiece != states.pieceKind && board.currentPiece != "") {
+        // aca ya se que entra
+        cell.spawnPiece(states, board, row, column);
         states.setIsSelected(false);
       }
       states.setIsCurrentCell(true);
-      cell.updateBoard(board);
+      board.updater(!board.update);
       return;
     }
 
-    if (states.pieceKind == '' && board.currentPiece != '') {
-      cell.spawnPiece(states, board);
-      cell.updateBoard(board);
+    if (states.pieceKind == "" && board.currentPiece != "") {
+      cell.spawnPiece(states, board, row, column);
+      board.updater(!board.update);
     }
   };
 
@@ -58,8 +60,8 @@ const Cell = ({ row, column }) => {
   useEffect(() => {
     cell.cellSelector(states, board, row, column);
     if (row + column == board.cellToDelete) {
-      states.setPieceKind('');
-      board.setCellToDelete('');
+      states.setPieceKind("");
+      board.setCellToDelete("");
     }
   }, [board.update]);
 
@@ -72,12 +74,12 @@ const Cell = ({ row, column }) => {
     <div
       className={
         cell.handleClassName(states.isSelected, row) +
-        ' r' +
+        " r" +
         row +
-        ' c' +
+        " c" +
         column
       }
-      id={'cell' + column + row}
+      id={"cell" + column + row}
       onClick={handleClick}
     >
       <span>{column + row}</span>
